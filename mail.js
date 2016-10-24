@@ -68,6 +68,43 @@ function MailXSend(config) {
         this.headers[key] = val;
     };
 
+    /*
+        mail.set({
+            to: 'abcd@example.com',
+            to_name: 'BAKA',
+            project: 'abcdef',
+            subject: 'Hello',
+            from: 'efgh@example.com',
+            from_name: 'AHO',
+            vars: {
+                name: 'BAKA'
+            },
+            links: {
+                verify_url: 'https://example.com/verify'
+            }
+        });
+    */
+
+    this.set = function(data) {
+        var objects = ['vars', 'links', 'headers'];
+        var push = ['to', 'to_name', 'bcc', 'cc', 'addressbook'];
+        var set = ['project', 'subject', 'reply', 'from_name', 'from']
+
+        if (data) {
+            for (var name of Object.getOwnPropertyNames(data)) {
+                if (objects.includes(name)) {
+                    for (var subName of Object.getOwnPropertyNames(data[name])) {
+                        this[name][data[name][subName].key] = data[name][subName].val;
+                    }
+                }
+                if (push.includes(name))
+                    this[name].push(data[name]);
+                if (set.includes(name))
+                    this[name] = data[name];
+            }
+        }
+    }
+
     this.build_params = function() {
         var params = {};
         if (this.to.length > 0) {
