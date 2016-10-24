@@ -129,8 +129,8 @@ function MailXSend(config) {
         return params;
     };
     var mail = new Mail(config);
-    this.send = function() {
-        return mail.send(this.build_params());
+    this.send = function(callback) {
+        return mail.send(this.build_params(), callback);
     }
 };
 
